@@ -1,46 +1,59 @@
-#include<stdio.h>
-int graph[10][10]={
-    {0,0,1,0,1,0,0,0,0,0},
-    {0,1,0,1,0,1,0,0,0,0},
-    {0,0,1,0,0,0,0,0,1,0},
-    {0,1,0,0,0,1,1,0,0,0},
-    {0,0,1,0,1,0,1,1,0,0},
-    {0,0,0,1,0,1,0,0,0,1},
-    {0,0,0,0,1,0,0,0,1,0},
-    {0,0,0,0,0,1,0,1,0,1},
-    {0,0,0,0,0,0,1,0,1,0}
-};
-int visited[10];
-void BFS(int start){
-    int q[20],front=0,rear=0;
-    q[rear++]=start;
-    visited[start]=1;
-    printf("BSF:  ");
-    while(front<rear){
-        int node= q[front++];
-        printf("%d ",node);
-        for(int i=1;i<=9;i++){
-            if(graph[node][i]&& !visited[i]){
-                visited[i]=1;
-                q[rear++]=i;
+#include <stdio.h>
+
+int g[20][20], vis[20];
+
+void bfs(int s, int n){
+    int q[50], f = 0, r = 0;
+    q[r++] = s;
+    vis[s] = 1;
+
+    printf("BFS: ");
+    while(f < r){
+        int x = q[f++];
+        printf("%d ", x);
+
+        for(int i = 1; i <= n; i++){
+            if(g[x][i] && !vis[i]){
+                vis[i] = 1;
+                q[r++] = i;
             }
         }
     }
 }
-void DFS(int node){
-    printf("%d ",node);
-    visited[node]=1;
-    for(int i=9;i>=1;i--){
-        if(graph[node][i]&& !visited[i]){
-            DFS(i);
+
+void dfs(int s, int n){
+    printf("%d ", s);
+    vis[s] = 1;
+
+    for(int i = 1; i <= n; i++){
+        if(g[s][i] && !vis[i]){
+            dfs(i, n);
         }
     }
 }
+
 int main(){
-    BFS(1);
-    for(int i=1;i<10;i++){
-        visited[i]=0;}
-        printf("\n DFS :");
-        DFS(1);
+    int n, s;
+
+    printf("N: ");
+    scanf("%d", &n);
+
+    printf("Mat:\n");
+    for(int i = 1; i <= n; i++)
+        for(int j = 1; j <= n; j++)
+            scanf("%d", &g[i][j]);
+
+    printf("Start: ");
+    scanf("%d", &s);
+
+    bfs(s, n);
+
+  
+    for(int i = 1; i <= n; i++)
+        vis[i] = 0;
+
+    printf("\nDFS: ");
+    dfs(s, n);
+
     return 0;
 }
