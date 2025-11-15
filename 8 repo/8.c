@@ -1,59 +1,57 @@
 #include <stdio.h>
+#define max 20
 
-struct edge {
-    int u, v, w;
-};
+int p[max];
 
-int p[30];
-
-int find(int i) {
-    while (p[i] != i)
-        i = p[i];
-    return i;
+int find(int x) {
+    while(p[x] != -1) x = p[x];
+    return x;
 }
 
-void join(int i, int j) {
-    int a = find(i);
-    int b = find(j);
+void join(int x,int y) {
+    int a = find(x);
+    int b = find(y);
     p[a] = b;
 }
 
 int main() {
-    struct edge e[30], t[30], tmp;
-    int n, m, i, j, k = 0, c = 0;
+    int n,i,j,u,v,c[max][max],cost=0,e=1;
 
-    printf("enter no of vertices and edges: ");
-    scanf("%d %d", &n, &m);
+    printf("vertices: ");
+    scanf("%d",&n);
 
-    printf("enter edges (u v w):\n");
-    for (i = 0; i < m; i++)
-        scanf("%d %d %d", &e[i].u, &e[i].v, &e[i].w);
-
-    for (i = 0; i < n; i++)
-        p[i] = i;
-
-    for (i = 0; i < m - 1; i++)
-        for (j = 0; j < m - i - 1; j++)
-            if (e[j].w > e[j + 1].w) {
-                tmp = e[j];
-                e[j] = e[j + 1];
-                e[j + 1] = tmp;
-            }
-
-    for (i = 0; i < m; i++) {
-        int a = find(e[i].u);
-        int b = find(e[i].v);
-        if (a != b) {
-            t[k++] = e[i];
-            join(a, b);
-            c += e[i].w;
+    printf("matrix:\n");
+    for(i=0;i<n;i++)
+        for(j=0;j<n;j++) {
+            scanf("%d",&c[i][j]);
+            if(c[i][j]==0) c[i][j]=999;
         }
+
+    for(i=0;i<n;i++) p[i]=-1;
+
+    printf("\nmst edges:\n");
+    while(e<n) {
+        int min=999;
+        u=v=-1;
+
+        for(i=0;i<n;i++)
+            for(j=0;j<n;j++)
+                if(c[i][j]<min) {
+                    min=c[i][j];
+                    u=i;
+                    v=j;
+                }
+
+        if(find(u)!=find(v)) {
+            printf("%d-%d(%d)\n",u+1,v+1,min);
+            cost+=min;
+            join(u,v);
+            e++;
+        }
+
+        c[u][v]=c[v][u]=999;
     }
 
-    printf("\nminimum spanning tree edges:\n");
-    for (i = 0; i < k; i++)
-        printf("%d - %d = %d\n", t[i].u, t[i].v, t[i].w);
-
-    printf("total cost = %d\n", c);
+    printf("\ntotal=%d\n",cost);
     return 0;
 }
