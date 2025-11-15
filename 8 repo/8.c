@@ -55,3 +55,4 @@ int main() {
     printf("\ntotal=%d\n",cost);
     return 0;
 }
+
