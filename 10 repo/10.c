@@ -1,31 +1,23 @@
 #include <stdio.h>
-
-int main()
-{
-    FILE *fp1, *fp2;
+int main(){
+    FILE *fs;
+    FILE *fd;
     char ch;
-    fp1 = fopen("inputfile.txt","r");
-    fp2 = fopen("outputfile.txt","w");
-
-    if(fp1 == NULL )
-    printf("File not opened correctly\n");
-       
-     if(fp2 == NULL)
-    {
-        printf("File not opened correctly\n");
+    fs = fopen("input.txt", "r");
+    fd = fopen("output.txt", "w");
  
-    }
-    else
-    {
-        while((ch = fgetc(fp1)) != EOF)
-        {
-            fputc(ch, fp2);
-             printf("File copied successfully!\n");
+    
+    while(1) {
+        ch = fgetc(fs);
+        if (ch == EOF) {
+            break;
         }
+        fputc(ch, fd);
     }
-
-    fclose(fp1);
-    fclose(fp2);
-     printf("File copied successfully!\n");
-   return 0;
+    
+    fclose(fs);
+    fclose(fd);
+    printf("Copied successfully!");
+    
+    return 0;
 }
